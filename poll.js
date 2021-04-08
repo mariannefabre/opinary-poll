@@ -1,4 +1,6 @@
-function initPoll(element, options) {
+exports.id = 'poll';
+
+function initPoll(domElement, poll) {
   let state = {
     hasVoted: false,
   };
@@ -10,20 +12,20 @@ function initPoll(element, options) {
     }
   }
   function renderPoll() {
-    const answers = options.answers
+    const answers = poll.answers
       .map((answer, index) => Answer(answer, index))
       .join("");
-    element.innerHTML = `
-    <h2>${options.question}</h2> 
+      domElement.innerHTML = `
+    <h2>${poll.question}</h2> 
     <ul>${answers}</ul>
 `;
   }
   function renderVotes() {
-    element.innerHTML = "votes";
+    domElement.innerHTML = "votes";
     // reduce()
   }
   render();
-  element.addEventListener("click", (event) => {
+  domElement.addEventListener("click", (event) => {
     if (event.target.matches("button")) {
       vote(event.target.dataset.id);
       state.hasVoted = true;
@@ -53,3 +55,5 @@ function vote(answerId) {
     console.log(error);
   }
 }
+
+module.exports = Answer;
