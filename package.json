@@ -1,0 +1,22 @@
+{
+  "name": "poll",
+  "version": "1.0.0",
+  "description": "",
+  "main": "poll.js",
+  "scripts": {
+    "test": "mocha test/**/*_test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariannefabre/opinary-poll.git"
+  },
+  "author": "Marianne",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mariannefabre/opinary-poll/issues"
+  },
+  "homepage": "https://github.com/mariannefabre/opinary-poll#readme",
+  "devDependencies": {
+    "mocha": "^8.3.2"
+  }
+}
