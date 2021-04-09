@@ -3,6 +3,7 @@ exports.id = 'poll';
 function initPoll(domElement, poll) {
   let state = {
     hasVoted: false,
+    voteId: null,
   };
   function render() {
     if (state.hasVoted) {
@@ -16,8 +17,7 @@ function initPoll(domElement, poll) {
       .map((answer, index) => Answer(answer, index))
       .join("");
       domElement.innerHTML = `
-    <h2>${poll.question}</h2> 
-<<<<<<< HEAD
+    <p class="question">${poll.question}</p> 
     <ul class="nobullets">${answers}</ul>
 `;
   }
@@ -25,35 +25,22 @@ function initPoll(domElement, poll) {
     const votes = getVotes();
     const answersWithVotes = poll.answers
       .map((answer, index) => {
-        const nbOccurences = votes.reduce((a, v) => (parseInt(v)===index ? a+1 : a), 0); 
-        return AnswerWithVotes(answer, index, nbOccurences) 
+        const nbOccurences = votes.reduce((a, v) => (v===index ? a+1 : a), 0); 
+        return AnswerWithVotes(answer, index, nbOccurences, state.voteId) 
       }).join("");
       domElement.innerHTML = `
-    <h2>${poll.question}</h2> 
+    <p class="question">${poll.question}</p> 
     <ul class="nobullets">${answersWithVotes}</ul>
 `;
-=======
-    <ul>${answers}</ul>
-`;
-  }
-  function renderVotes() {
-    domElement.innerHTML = "votes";
-    // reduce()
->>>>>>> 0a7f9ac06c3a32121665c96a2861aad716107a8d
   }
 
   render();
-<<<<<<< HEAD
 
   const handler = (e) => {
     if (e.target.matches("button")) {
       vote(e.target.dataset.id);      // save vote in localStorage
-=======
-  domElement.addEventListener("click", (event) => {
-    if (event.target.matches("button")) {
-      vote(event.target.dataset.id);
->>>>>>> 0a7f9ac06c3a32121665c96a2861aad716107a8d
       state.hasVoted = true;
+      state.voteId = parseInt(e.target.dataset.id);
       render();
       domElement.removeEventListener("click", handler);
     }
@@ -64,8 +51,13 @@ function initPoll(domElement, poll) {
 function Answer(answer, id) {
   return `<li><button class="answer-button" data-id="${id}">${answer}</button></li>`;
 }
-function AnswerWithVotes(answer, id, nbVotes) {
-  return `<li><button class="answer-button" data-id="${id}">${answer}${nbVotes}</button></li>`;
+function AnswerWithVotes(answer, id, nbVotes, voteId) {
+  if(id===voteId){
+    return `<li><div class="answer-wrapper selected"><span>${answer}</span><span>${nbVotes} votes</span></div></li>`;
+  }else{
+    return `<li><div class="answer-wrapper"><span>${answer}</span><span>${nbVotes} votes</span></div></li>`;
+  }
+  
 }
 
 function vote(answerId) {
@@ -78,19 +70,16 @@ function vote(answerId) {
     console.log(error);
   }
 }
-<<<<<<< HEAD
 function getVotes(){
   try{
     let votes = JSON.parse(localStorage.getItem("votes"));
     if (votes === null) {
-      votes = [];
+      return [];
     }
-    return votes;
+    return votes.map(vote => parseInt(vote));
   }catch(error){
     console.log(error);
   }
 }
-=======
->>>>>>> 0a7f9ac06c3a32121665c96a2861aad716107a8d
 
 module.exports = Answer;
