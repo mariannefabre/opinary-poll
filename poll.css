@@ -6,50 +6,104 @@
 }
 
 /* POLL */
-
 #poll{
-  width : 400px;
-  margin: 10px;
+  width : 95%;
+  margin: 10px auto;
   font-family: Helvetica, Arial, sans-serif;
+  max-width : 400px;
 }
 
-.question{
+.poll-question{
   font-size: 20px;
   font-weight: 700;
   color: rgb(249, 165, 36);
   text-align: center;
 }
-.answer-button, .answer-wrapper{
+.btn-poll-answer, .poll-result{
   color: rgb(146, 146, 146);
-  background: inherit;
+  background-color: inherit;
   border: solid 1px transparent;
   box-shadow: 1px 1px 2px 2px rgb(50 50 50 / 12%);
 	cursor: pointer;
 	outline: none;
-  margin: 5px 0px;
+  margin: 6px 0px;
   border-radius: 5px;
   width: 100%;
   text-align: left;
-  padding: 12px 20px;
+  padding: 15px 20px;
   font-weight: 500;
   font-size: 14px;
 }
 
-.answer-button:hover{
+.btn-poll-answer:hover{
   box-shadow: 1px 1px 2px 2px rgba(249, 164, 36, 0.719);
   color:rgb(249, 165, 36);
   font-weight: 600;
   transition: box-shadow 0.2s ease-in-out;
 }
-.answer-wrapper{
+.poll-result{
   cursor: inherit;
   box-sizing: border-box;
   display: inline-flex;
   justify-content: space-between;
 }
-.selected{
+.voted{
   color: white;
   font-weight: 600;
-  background: rgba(249, 164, 36, 0.884);
-  box-shadow: 1px 1px 0px 2px rgba(249, 164, 36, 0.884);
+   background: rgba(249, 164, 36, 0.884);
+  box-shadow: 1px 1px 0px 1px rgba(249, 164, 36, 0.884);
+}
+.fade-in {
+   animation: fadeIn ease 1.8s;
+  -webkit-animation: fadeIn ease 1.8s;
+  -moz-animation: fadeIn ease 1.8s;
+  -o-animation: fadeIn ease 1.8s;
+  -ms-animation: fadeIn ease 1.8s; 
+}
+@keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  40% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  40% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  40% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-ms-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  40% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+}
 }

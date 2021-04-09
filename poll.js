@@ -17,7 +17,7 @@ function initPoll(domElement, poll) {
       .map((answer, index) => Answer(answer, index))
       .join("");
       domElement.innerHTML = `
-    <p class="question">${poll.question}</p> 
+    <p class="poll-question">${poll.question}</p> 
     <ul class="nobullets">${answers}</ul>
 `;
   }
@@ -29,7 +29,7 @@ function initPoll(domElement, poll) {
         return AnswerWithVotes(answer, index, nbOccurences, state.voteId) 
       }).join("");
       domElement.innerHTML = `
-    <p class="question">${poll.question}</p> 
+    <p class="poll-question">${poll.question}</p> 
     <ul class="nobullets">${answersWithVotes}</ul>
 `;
   }
@@ -49,13 +49,13 @@ function initPoll(domElement, poll) {
 }
 
 function Answer(answer, id) {
-  return `<li><button class="answer-button" data-id="${id}">${answer}</button></li>`;
+  return `<li><button class="btn-poll-answer" data-id="${id}">${answer}</button></li>`;
 }
 function AnswerWithVotes(answer, id, nbVotes, voteId) {
   if(id===voteId){
-    return `<li><div class="answer-wrapper selected"><span>${answer}</span><span>${nbVotes} votes</span></div></li>`;
+    return `<li><div class="poll-result voted"><span>${answer}</span><span class="fade-in">${nbVotes} votes</span></div></li>`;
   }else{
-    return `<li><div class="answer-wrapper"><span>${answer}</span><span>${nbVotes} votes</span></div></li>`;
+    return `<li><div class="poll-result"><span>${answer}</span><span class="fade-in">${nbVotes} votes</span></div></li>`;
   }
   
 }
