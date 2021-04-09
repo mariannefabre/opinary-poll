@@ -6,7 +6,7 @@ function initPoll(domElement, poll) {
   };
   function render() {
     if (state.hasVoted) {
-      renderVotes();
+      renderPollWithVotes();
     } else {
       renderPoll();
     }
@@ -17,41 +17,60 @@ function initPoll(domElement, poll) {
       .join("");
       domElement.innerHTML = `
     <h2>${poll.question}</h2> 
-    <ul>${answers}</ul>
+    <ul class="nobullets">${answers}</ul>
 `;
   }
-  function renderVotes() {
-    domElement.innerHTML = "votes";
-    // reduce()
+  function renderPollWithVotes() {
+    const votes = getVotes();
+    const answersWithVotes = poll.answers
+      .map((answer, index) => {
+        const nbOccurences = votes.reduce((a, v) => (parseInt(v)===index ? a+1 : a), 0); 
+        return AnswerWithVotes(answer, index, nbOccurences) 
+      }).join("");
+      domElement.innerHTML = `
+    <h2>${poll.question}</h2> 
+    <ul class="nobullets">${answersWithVotes}</ul>
+`;
   }
+
   render();
-  domElement.addEventListener("click", (event) => {
-    if (event.target.matches("button")) {
-      vote(event.target.dataset.id);
+
+  const handler = (e) => {
+    if (e.target.matches("button")) {
+      vote(e.target.dataset.id);      // save vote in localStorage
       state.hasVoted = true;
       render();
+      domElement.removeEventListener("click", handler);
     }
-  });
+  }
+  domElement.addEventListener("click", handler);
 }
 
 function Answer(answer, id) {
-  return `<li><button data-id="${id}">${answer}</button></li>`;
+  return `<li><button class="answer-button" data-id="${id}">${answer}</button></li>`;
+}
+function AnswerWithVotes(answer, id, nbVotes) {
+  return `<li><button class="answer-button" data-id="${id}">${answer}${nbVotes}</button></li>`;
 }
 
 function vote(answerId) {
   let current = [];
   try {
-    try {
-      current = JSON.parse(localStorage.getItem("answers"));
-    } catch (error) {
-      console.log(error);
-    }
-    if (current === null) {
-      current = [];
-    }
+    current = getVotes();
     const serializedAnswers = JSON.stringify([...current, answerId]);
-    localStorage.setItem("answers", serializedAnswers);
+    localStorage.setItem("votes", serializedAnswers);
   } catch (error) {
+    console.log(error);
+  }
+}
+function getVotes(){
+  try{
+    let votes = JSON.parse(localStorage.getItem("votes"));
+    if (votes === null) {
+      votes = [];
+    }
+    return votes;
+  }catch(error){
     console.log(error);
   }
 }
