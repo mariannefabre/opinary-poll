@@ -17,6 +17,7 @@ function initPoll(domElement, poll) {
       .join("");
       domElement.innerHTML = `
     <h2>${poll.question}</h2> 
+<<<<<<< HEAD
     <ul class="nobullets">${answers}</ul>
 `;
   }
@@ -31,13 +32,27 @@ function initPoll(domElement, poll) {
     <h2>${poll.question}</h2> 
     <ul class="nobullets">${answersWithVotes}</ul>
 `;
+=======
+    <ul>${answers}</ul>
+`;
+  }
+  function renderVotes() {
+    domElement.innerHTML = "votes";
+    // reduce()
+>>>>>>> 0a7f9ac06c3a32121665c96a2861aad716107a8d
   }
 
   render();
+<<<<<<< HEAD
 
   const handler = (e) => {
     if (e.target.matches("button")) {
       vote(e.target.dataset.id);      // save vote in localStorage
+=======
+  domElement.addEventListener("click", (event) => {
+    if (event.target.matches("button")) {
+      vote(event.target.dataset.id);
+>>>>>>> 0a7f9ac06c3a32121665c96a2861aad716107a8d
       state.hasVoted = true;
       render();
       domElement.removeEventListener("click", handler);
@@ -63,6 +78,7 @@ function vote(answerId) {
     console.log(error);
   }
 }
+<<<<<<< HEAD
 function getVotes(){
   try{
     let votes = JSON.parse(localStorage.getItem("votes"));
@@ -74,5 +90,7 @@ function getVotes(){
     console.log(error);
   }
 }
+=======
+>>>>>>> 0a7f9ac06c3a32121665c96a2861aad716107a8d
 
 module.exports = Answer;
