@@ -4,6 +4,7 @@
   "description": "",
   "main": "poll.js",
   "scripts": {
+    "start": "open index.html",
     "test": "mocha test/**/*_test.js"
   },
   "repository": {
