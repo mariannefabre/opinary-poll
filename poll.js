@@ -1,5 +1,4 @@
 function initPoll(domElement, poll) {
-  
   let state = {
     hasVoted: false,
     voteId: null,
@@ -7,14 +6,13 @@ function initPoll(domElement, poll) {
 
   // Check if an element with `data-poll-id=poll.id` exists
   const existingPoll = document.querySelector(`[data-poll-id=${poll.id}]`);
-
   if (existingPoll) {
-    throw new Error("Poll existing");
+    throw new Error("Can't display the same poll twice.");
   }
 
   function render() {
     if (state.hasVoted) {
-      renderVotes();
+      renderPollWithVotes();
     } else {
       renderPoll();
     }
@@ -23,59 +21,62 @@ function initPoll(domElement, poll) {
     const answers = poll.answers
       .map((answer, index) => Answer(answer, index))
       .join("");
-      domElement.innerHTML = `<div data-poll-id="${poll.id}" id="poll-${poll.id}">
+    domElement.innerHTML = `<div data-poll-id="${poll.id}" class="poll">
     <p class="poll-question">${poll.question}</p> 
     <ul class="nobullets">${answers}</ul>
     </div>
 `;
   }
-  function renderVotes() {
+  function renderPollWithVotes() {
     const votes = getVotes(poll);
     console.log(votes);
     const answersWithVotes = poll.answers
       .map((answer, index) => {
-        return AnswerWithVotes(answer, index, votes[index], state.voteId) 
-      }).join("");
-      domElement.innerHTML = `<div data-poll-id="${poll.id}" id="poll-${poll.id}">
-    <p class="poll-question">${poll.question}</p> 
-    <ul class="nobullets">${answersWithVotes}</ul>
-    <div>
-`;
+        return AnswerWithVotes(answer, index, votes[index], state.voteId);
+      })
+      .join("");
+    domElement.innerHTML = `
+      <div data-poll-id="${poll.id}" class="poll"">
+        <p class="poll-question">${poll.question}</p> 
+        <ul class="nobullets">${answersWithVotes}</ul>
+      </div>`;
   }
 
   render();
 
   const handler = (e) => {
     if (e.target.matches("button")) {
-      saveVote(poll, e.target.dataset.id);      // save vote in localStorage
+      saveVote(poll, e.target.dataset.id); // save vote in localStorage
       state.hasVoted = true;
       state.voteId = parseInt(e.target.dataset.id);
       render();
       domElement.removeEventListener("click", handler);
     }
-  }
+  };
   domElement.addEventListener("click", handler);
 }
 
 function Answer(answer, id) {
-  return `<li><button class="btn-poll-answer" data-id="${id}">${answer}</button></li>`;
+  return `<li>
+            <button class="btn-poll-answer" data-id="${id}">${answer}</button>
+          </li>`;
 }
 function AnswerWithVotes(answer, id, nbVotes, voteId) {
-  const renderedVotes = nbVotes>1 ? `${nbVotes} votes` : `${nbVotes} vote`;
-  if(id===voteId){
+  const renderedVotes = nbVotes > 1 ? `${nbVotes} votes` : `${nbVotes} vote`;
+  if (id === voteId) {
     return `<li>
               <div class="poll-result voted">
                 <span>${answer}</span>
                 <span class="fade-in">${renderedVotes}</span>
               </div>
             </li>`;
-  }else{
+  } else {
     return `<li>
-            <div class="poll-result">
-              <span>${answer}</span>
-              <span class="fade-in">${renderedVotes}</span>
-            </div>
-          </li>`;
+              <div class="poll-result">
+                <span>${answer}</span>
+                <span class="fade-in">${renderedVotes}</span>
+              </div>
+            </li>`;
   }
 }
 
@@ -83,25 +84,29 @@ function saveVote(poll, answerId) {
   let currentVotes = [];
   try {
     currentVotes = getVotes(poll);
-    const serializedAnswers = JSON.stringify({...currentVotes, [answerId]: currentVotes[answerId]+1});
+    const serializedAnswers = JSON.stringify({
+      ...currentVotes,
+      [answerId]: currentVotes[answerId] + 1,
+    });
     localStorage.setItem(`votes-${poll.id}`, serializedAnswers);
   } catch (error) {
     console.log(error);
   }
 }
-function getVotes(poll){
-  try{
+function getVotes(poll) {
+  try {
     let votes = JSON.parse(localStorage.getItem(`votes-${poll.id}`));
     if (votes === null) {
-      votes = {}; 
-      for(let i=0; i<poll.answers.length; i++){
+      votes = {};
+      for (let i = 0; i < poll.answers.length; i++) {
         votes[i] = 0;
       }
     }
     return votes;
-  }catch(error){
+  } catch (error) {
     console.log(error);
   }
 }
 
-module.exports = Answer;
+exports.Answer = Answer;
+exports.AnswerWithVotes = AnswerWithVotes;
