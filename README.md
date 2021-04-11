@@ -32,7 +32,7 @@ To embed the widget in your own html file:
     question: "[Place your question]",
     answers: [
       "[Place first answer]",
-      "[Place seconf answer]",
+      "[Place second answer]",
       "[Place third answer]",
     ],
   });
