@@ -11,7 +11,7 @@ To embed the widget in your own html file:
 ```html
 <link
   rel="stylesheet"
-  href="https://rawcdn.githack.com/mariannefabre/opinary-poll/9408d2f274dc5bf6258cab535b5dc13d3b5055e4/poll.css"
+  href="https://rawcdn.githack.com/mariannefabre/opinary-poll/61040fdff60f4222f989844bd80dc0aab6c3c087/poll.css"
   type="text/css"
 />
 ```
@@ -25,7 +25,7 @@ To embed the widget in your own html file:
 3. Above the `</body>` tag add (don't forget to replace the values in []):
 
 ```html
-<script src="https://rawcdn.githack.com/mariannefabre/opinary-poll/9408d2f274dc5bf6258cab535b5dc13d3b5055e4/poll.js"></script>
+<script src="https://rawcdn.githack.com/mariannefabre/opinary-poll/a92ac0c908819aaa0594fafdc95b470df9859d39/poll.js"></script>
 <script>
   initPoll(document.getElementById("poll"), {
     id: "[Place a unique id]",
