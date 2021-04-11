@@ -19,17 +19,17 @@ describe("Answer", () => {
 });
 
 describe("AnswerWithVotes", () => {
-  it("returns a list item containing a div with the answer and its number of votes", () => {
+  it("returns a list item containing a button with the answer and its number of votes", () => {
     // Setup
     const answer = "first answer";
     const id = 1;
     const voteId = 2;
     const nbVotes = 3;
     const expected = `<li>
-                        <div class="poll-result">
+                        <button class="poll-result">
                           <span>first answer</span>
                           <span class="fade-in">3 votes</span>
-                        </div>
+                        </button>
                       </li>`;
 
     // Exercise
@@ -41,17 +41,17 @@ describe("AnswerWithVotes", () => {
 });
 
 describe("AnswerWithVotes", () => {
-  it("returns a list item containing a div with the answer, its number of votes and the 'voted' class", () => {
+  it("returns a list item containing a button with the answer, its number of votes and the 'voted' class", () => {
     // Setup
     const answer = "first answer";
     const id = 1;
     const voteId = 1;
     const nbVotes = 3;
     const expected = `<li>
-                        <div class="poll-result voted">
+                        <button class="poll-result voted">
                           <span>first answer</span>
                           <span class="fade-in">3 votes</span>
-                        </div>
+                        </button>
                       </li>`;
 
     // Exercise
