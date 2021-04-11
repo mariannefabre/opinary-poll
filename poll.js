@@ -17,26 +17,34 @@ function initPoll(domElement, poll) {
       renderPoll();
     }
   }
+
   function renderPoll() {
     const answers = poll.answers
-      .map((answer, index) => Answer(answer, index))
+      .map((answer, index) => OpinaryAnswer(answer, index))
       .join("");
-    domElement.innerHTML = `<div data-poll-id="${poll.id}" class="poll">
-    <p class="poll-question">${poll.question}</p> 
-    <ul class="nobullets">${answers}</ul>
+    domElement.innerHTML = `
+    <div data-poll-id="${poll.id}" class="poll">
+      <p class="poll-question">${poll.question}</p> 
+      <ul class="nobullets">${answers}</ul>
     </div>
 `;
   }
+
   function renderPollWithVotes() {
     const votes = getVotes(poll);
     console.log(votes);
     const answersWithVotes = poll.answers
       .map((answer, index) => {
-        return AnswerWithVotes(answer, index, votes[index], state.voteId);
+        return OpinaryAnswerWithVotes(
+          answer,
+          index,
+          votes[index],
+          state.voteId
+        );
       })
       .join("");
     domElement.innerHTML = `
-      <div data-poll-id="${poll.id}" class="poll"">
+      <div data-poll-id="${poll.id}" class="poll">
         <p class="poll-question">${poll.question}</p> 
         <ul class="nobullets">${answersWithVotes}</ul>
       </div>`;
@@ -56,28 +64,23 @@ function initPoll(domElement, poll) {
   domElement.addEventListener("click", handler);
 }
 
-function Answer(answer, id) {
-  return `<li>
-            <button class="btn-poll-answer" data-id="${id}">${answer}</button>
-          </li>`;
+function OpinaryAnswer(answer, id) {
+  return `
+  <li>
+    <button class="btn-poll-answer" data-id="${id}">${answer}</button>
+  </li>`;
 }
-function AnswerWithVotes(answer, id, nbVotes, voteId) {
+
+function OpinaryAnswerWithVotes(answer, id, nbVotes, voteId) {
   const renderedVotes = nbVotes > 1 ? `${nbVotes} votes` : `${nbVotes} vote`;
-  if (id === voteId) {
-    return `<li>
-              <div class="poll-result voted">
-                <span>${answer}</span>
-                <span class="fade-in">${renderedVotes}</span>
-              </div>
-            </li>`;
-  } else {
-    return `<li>
-              <div class="poll-result">
-                <span>${answer}</span>
-                <span class="fade-in">${renderedVotes}</span>
-              </div>
-            </li>`;
-  }
+  const classNames = id === voteId ? "poll-result voted" : "poll-result";
+  return `
+    <li>
+      <div class="${classNames}">
+        <span>${answer}</span>
+        <span class="fade-in">${renderedVotes}</span>
+      </div>
+    </li>`;
 }
 
 function saveVote(poll, answerId) {
@@ -93,6 +96,7 @@ function saveVote(poll, answerId) {
     console.log(error);
   }
 }
+
 function getVotes(poll) {
   try {
     let votes = JSON.parse(localStorage.getItem(`votes-${poll.id}`));
@@ -108,5 +112,7 @@ function getVotes(poll) {
   }
 }
 
-exports.Answer = Answer;
-exports.AnswerWithVotes = AnswerWithVotes;
+if (typeof exports !== "undefined") {
+  exports.Answer = OpinaryAnswer;
+  exports.AnswerWithVotes = OpinaryAnswerWithVotes;
+}
