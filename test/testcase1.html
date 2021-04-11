@@ -1,0 +1,34 @@
+<!--Test case with two identical poll-->
+<!DOCTYPE html>
+<html>
+  <header>
+    <title>First poll</title>
+    <link rel="stylesheet" href="../poll.css" type="text/css"/>
+  </header>
+  <body>
+    <div id="poll"></div>
+    <script src="../poll.js"></script>
+    <script >
+      initPoll(document.getElementById("poll"), {
+        id: "feeling",
+        question: "How you feel today?",
+        answers: [
+          "Brilliant! I have so much energy",
+          "Always can be worse",
+          "Please, end my misery",
+        ],
+      });
+    </script>
+        <script >
+      initPoll(document.getElementById("poll"), {
+        id: "feeling",
+        question: "How you feel today?",
+        answers: [
+          "Brilliant! I have so much energy",
+          "Always can be worse",
+          "Please, end my misery",
+        ],
+      });
+    </script>
+  </body>
+</html>
