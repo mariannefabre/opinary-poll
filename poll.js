@@ -1,13 +1,20 @@
-exports.id = 'poll';
-
 function initPoll(domElement, poll) {
+  
   let state = {
     hasVoted: false,
     voteId: null,
   };
+
+  // Check if an element with `data-poll-id=poll.id` exists
+  const existingPoll = document.querySelector(`[data-poll-id=${poll.id}]`);
+
+  if (existingPoll) {
+    throw new Error("Poll existing");
+  }
+
   function render() {
     if (state.hasVoted) {
-      renderPollWithVotes();
+      renderVotes();
     } else {
       renderPoll();
     }
@@ -16,21 +23,23 @@ function initPoll(domElement, poll) {
     const answers = poll.answers
       .map((answer, index) => Answer(answer, index))
       .join("");
-      domElement.innerHTML = `
+      domElement.innerHTML = `<div data-poll-id="${poll.id}" id="poll-${poll.id}">
     <p class="poll-question">${poll.question}</p> 
     <ul class="nobullets">${answers}</ul>
+    </div>
 `;
   }
-  function renderPollWithVotes() {
-    const votes = getVotes();
+  function renderVotes() {
+    const votes = getVotes(poll);
+    console.log(votes);
     const answersWithVotes = poll.answers
       .map((answer, index) => {
-        const nbOccurences = votes.reduce((a, v) => (v===index ? a+1 : a), 0); 
-        return AnswerWithVotes(answer, index, nbOccurences, state.voteId) 
+        return AnswerWithVotes(answer, index, votes[index], state.voteId) 
       }).join("");
-      domElement.innerHTML = `
+      domElement.innerHTML = `<div data-poll-id="${poll.id}" id="poll-${poll.id}">
     <p class="poll-question">${poll.question}</p> 
     <ul class="nobullets">${answersWithVotes}</ul>
+    <div>
 `;
   }
 
@@ -38,7 +47,7 @@ function initPoll(domElement, poll) {
 
   const handler = (e) => {
     if (e.target.matches("button")) {
-      vote(e.target.dataset.id);      // save vote in localStorage
+      saveVote(poll, e.target.dataset.id);      // save vote in localStorage
       state.hasVoted = true;
       state.voteId = parseInt(e.target.dataset.id);
       render();
@@ -52,31 +61,44 @@ function Answer(answer, id) {
   return `<li><button class="btn-poll-answer" data-id="${id}">${answer}</button></li>`;
 }
 function AnswerWithVotes(answer, id, nbVotes, voteId) {
+  const renderedVotes = nbVotes>1 ? `${nbVotes} votes` : `${nbVotes} vote`;
   if(id===voteId){
-    return `<li><div class="poll-result voted"><span>${answer}</span><span class="fade-in">${nbVotes} votes</span></div></li>`;
+    return `<li>
+              <div class="poll-result voted">
+                <span>${answer}</span>
+                <span class="fade-in">${renderedVotes}</span>
+              </div>
+            </li>`;
   }else{
-    return `<li><div class="poll-result"><span>${answer}</span><span class="fade-in">${nbVotes} votes</span></div></li>`;
+    return `<li>
+            <div class="poll-result">
+              <span>${answer}</span>
+              <span class="fade-in">${renderedVotes}</span>
+            </div>
+          </li>`;
   }
-  
 }
 
-function vote(answerId) {
-  let current = [];
+function saveVote(poll, answerId) {
+  let currentVotes = [];
   try {
-    current = getVotes();
-    const serializedAnswers = JSON.stringify([...current, answerId]);
-    localStorage.setItem("votes", serializedAnswers);
+    currentVotes = getVotes(poll);
+    const serializedAnswers = JSON.stringify({...currentVotes, [answerId]: currentVotes[answerId]+1});
+    localStorage.setItem(`votes-${poll.id}`, serializedAnswers);
   } catch (error) {
     console.log(error);
   }
 }
-function getVotes(){
+function getVotes(poll){
   try{
-    let votes = JSON.parse(localStorage.getItem("votes"));
+    let votes = JSON.parse(localStorage.getItem(`votes-${poll.id}`));
     if (votes === null) {
-      return [];
+      votes = {}; 
+      for(let i=0; i<poll.answers.length; i++){
+        votes[i] = 0;
+      }
     }
-    return votes.map(vote => parseInt(vote));
+    return votes;
   }catch(error){
     console.log(error);
   }
