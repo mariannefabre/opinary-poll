@@ -76,10 +76,10 @@ function OpinaryAnswerWithVotes(answer, id, nbVotes, voteId) {
   const classNames = id === voteId ? "poll-result voted" : "poll-result";
   return `
     <li>
-      <div class="${classNames}">
+      <button class="${classNames}">
         <span>${answer}</span>
         <span class="fade-in">${renderedVotes}</span>
-      </div>
+      </button>
     </li>`;
 }
 
