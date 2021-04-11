@@ -60,8 +60,8 @@ Make sure to use different ids if you have multiple polls in one page.
 ### Installation
 
 ```
-$ cd opinary-poll
-$ npm install
+cd opinary-poll
+npm install
 
 ```
 
