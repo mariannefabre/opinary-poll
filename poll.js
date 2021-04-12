@@ -32,7 +32,6 @@ function initPoll(domElement, poll) {
 
   function renderPollWithVotes() {
     const votes = getVotes(poll);
-    console.log(votes);
     const answersWithVotes = poll.answers
       .map((answer, index) => {
         return OpinaryAnswerWithVotes(
