@@ -60,8 +60,9 @@ Make sure to use different ids if you have multiple polls in one page.
 ### Installation
 
 ```
-cd opinary-poll-main
+cd opinary-poll
 npm install
+npm start
 ```
 
 ### Test
@@ -75,7 +76,7 @@ In the 'test' folder, you can find 2 files:
 - poll_test.js is executed with the `npm test` command above.
 - testcase.html is testing if an error is thrown when two identical polls are added to the same page.
 
-## Ameliorations
+## Improvements
 
 - Inline styling to avoid CSS conflicts.
 - Unit testing with jsdom or the browser.
